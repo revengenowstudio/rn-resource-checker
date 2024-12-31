@@ -49,9 +49,10 @@ jobs:
       uses: svenstaro/upload-release-action@v2
       env:
         GOOS: ${{ matrix.os == 'windows-latest' && 'windows' || 'linux' }}
+        SUFFIX: ${{ matrix.os == 'windows-latest' && '.exe' || '' }}
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
-        asset_name: ${{ github.event.repository.name }}_${{ env.GOOS }}_${{ env.GOARCH }}
+        asset_name: ${{ github.event.repository.name }}_${{ env.GOOS }}_${{ env.GOARCH }}${{env.SUFFIX}}
         file: ./bin/${{ github.event.repository.name }}_${{ env.GOOS }}_${{ env.GOARCH }}
         tag: ${{ github.ref_name }}
         overwrite: true
