@@ -1,0 +1,53 @@
+name: Build and Release Go Project
+
+on:
+  workflow_dispatch: 
+  push:
+    branches:
+      - main  
+      # - gh-action-test
+    tags: 
+      - 'v*'
+  release:
+    types: [created]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        go-version: [1.20.x] # 根据需要调整 Go 版本
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Go
+      uses: actions/setup-go@v5
+      with:
+        go-version: ${{ matrix.go-version }}
+
+    - name: Install dependencies
+      run: go mod download
+
+    - name: Build binary
+      env:
+        GOOS: ${{ matrix.os == 'windows-latest' && 'windows' || 'linux' }}
+        GOARCH: amd64
+      run: |
+        mkdir -p ./bin
+        go build -o ./bin/${{ github.event.repository.name }}_${{ env.GOOS }}_${{ env.GOARCH }} ./src/
+
+    - name: Upload binary to release
+      id: upload-binary
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        asset_name: ${{ github.event.repository.name }}_${{ env.GOOS }}_${{ env.GOARCH }}
+        file: ./bin/${{ github.event.repository.name }}_${{ env.GOOS }}_${{ env.GOARCH }}
+        tag: ${{ github.ref_name }}
+        overwrite: true
+
+
+
