@@ -13,7 +13,7 @@ func main() {
 	// 指定要遍历的根目录列表
 	targetDirs := []string{"./"}
 
-	whiteListSuffix := []string{"mix", "exe", "dll"}
+	whiteListSuffix := []string{"mix", "exe", "dll", "ext"}
 
 	// 指定并发 worker 的数量
 	numWorkers := 8
