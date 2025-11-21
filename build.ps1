@@ -1,1 +1,1 @@
-go build -o rn-file-checker.exe ./src 
+goreleaser release --snapshot --clean

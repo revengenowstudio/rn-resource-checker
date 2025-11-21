@@ -28,3 +28,5 @@ go.work.sum
 *.mix
 *.txt
 Versioncode
+# Added by goreleaser init:
+dist/

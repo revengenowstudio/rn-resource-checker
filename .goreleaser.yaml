@@ -1,0 +1,14 @@
+version: 2
+
+dist: ./dist
+
+builds:
+  - main: ./main.go      # 入口包
+    binary: rn-resource-checker
+    goos: [windows, linux]
+    goarch: [amd64]
+    ldflags: -s -w -X main.version={{.Version}}
+    env: [CGO_ENABLED=0]
+
+archives:
+  - formats: [ 'binary' ]
