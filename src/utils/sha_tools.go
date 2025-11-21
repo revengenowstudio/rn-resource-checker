@@ -1,9 +1,10 @@
-package main
+package utils
 
 import (
 	"crypto/sha256"
 	"fmt"
 	"io"
+	"rn-resource-checker/src/log"
 
 	"os"
 	"sync"
@@ -73,7 +74,7 @@ func ComputeSHA256ForMultipleFiles(filenames []string, numWorkers int) ([]fileRe
 		close(resultChan)
 	}()
 	for result := range resultChan {
-		fmt.Printf("File: %s, Hash: %x\n", result.filename, result.hash)
+		log.Info(fmt.Sprintf("File: %s, Hash: %x", result.filename, result.hash))
 		results = append(results, result)
 	}
 	return results, nil

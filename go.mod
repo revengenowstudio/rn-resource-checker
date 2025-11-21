@@ -1,3 +1,5 @@
-module rn-file-checker
+module rn-resource-checker
 
-go 1.23.4
+go 1.25.4
+
+require github.com/urfave/cli/v3 v3.6.1

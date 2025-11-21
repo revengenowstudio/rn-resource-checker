@@ -1,12 +1,15 @@
-package main
+package utils
 
 import (
 	"fmt"
 	"os"
 	"sort"
+
+	"rn-resource-checker/src/log"
 )
 
 func OutputResult(outputFileName string, fileResults []fileResult, versionCodeContent string) {
+	log.Info(fmt.Sprintf("Save result to \"%v\" ", outputFileName))
 	outputFile, err := os.Create(outputFileName)
 	if err != nil {
 		panic(err)
