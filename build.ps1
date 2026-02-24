@@ -1,1 +1,1 @@
-goreleaser release --snapshot --clean
+dotnet publish -r win-x64 -c Release
