@@ -2,7 +2,7 @@
 using System.Security.Cryptography;
 using System.Collections.Concurrent;
 
-// 1. 设置配置
+var waitSecond = 5;
 string[] targetDirs = args.Length > 0 ? args[0].Split(',', ';') : ["./"];
 string[] extensions = [".mix", ".exe", ".dll", ".ext"];
 
@@ -25,7 +25,6 @@ await Parallel.ForEachAsync(files, async (path, ct) =>
 {
     try
     {
-        // 直接使用静态 HashDataAsync，底层会自动处理 FileStream 的 Buffer 和硬件指令集
         using var stream = File.OpenRead(path);
         byte[] hashBytes = await SHA256.HashDataAsync(stream, ct);
         var hash = Convert.ToHexString(hashBytes).ToLower();
@@ -38,7 +37,6 @@ await Parallel.ForEachAsync(files, async (path, ct) =>
     }
 });
 
-// 4. 排序并保存
 var sortedResults = results.OrderBy(r => r.Path).ToList();
 string outName = $"result.{DateTime.Now:yyyyMMdd-HHmmss}.txt";
 
@@ -49,5 +47,6 @@ await File.WriteAllLinesAsync(outName,
 sw.Stop();
 Console.WriteLine($"[INFO] Done in {sw.Elapsed.TotalSeconds:F3}s. Result: {outName}");
 
-// 模拟等待
-await Task.Delay(5000);
+
+Console.WriteLine($"Exit after {waitSecond}s ...");
+await Task.Delay(waitSecond*1000);
